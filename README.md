@@ -1,4 +1,5 @@
 # Expense-tracker
-
-## This is a Smart Expense Tracker to track all your daily expenses
-## Language used-Java
+ -> Add multiple users and track their individual expenses
+ -> Stores real-time expense done(date and time)
+ -> Gives you an analysis of the overall 
+ Language used--Java
