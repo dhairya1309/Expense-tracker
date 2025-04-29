@@ -29,28 +29,34 @@ public class ExpenseTracker {
         }
     }
 
-    public void displayExpenses(String username) {
+    public String displayExpenses(String username) {
+        StringBuilder output = new StringBuilder(); 
+
         try (Connection conn = DatabaseConnection.getConnection()) {
             String query = "SELECT category, amount, date, time FROM expenses WHERE username = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
-            System.out.printf("| %-15s | %10s | %-12s | %-8s |%n", "Category", "Amount", "Date", "Time");
-            System.out.println("------------------------------------------------------------------");
-            while (rs.next()) {
-                System.out.printf("| %-15s | %10.2f | %-12s | %-8s |%n",
-                    rs.getString("category"),
-                    rs.getDouble("amount"),
-                    rs.getString("date"),
-                    rs.getString("time"));
-            }
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+            output.append(String.format("| %-15s | %10s | %-12s | %-8s |%n", "Category", "Amount", "Date", "Time"));
+            output.append("------------------------------------------------------------------\n");
 
+            while (rs.next()) {
+                output.append(String.format("| %-15s | %10.2f | %-12s | %-8s |%n",
+                        rs.getString("category"),
+                        rs.getDouble("amount"),
+                        rs.getString("date"),
+                        rs.getString("time")));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error fetching expenses: " + e.getMessage());
+            output.append("Error fetching expenses. Please check the database connection.\n"); //append error message
+        }
+
+        return output.toString(); // Return the formatted string
+    }
+   
     public static List<String> getCategories() {
         return CATEGORIES;
     }

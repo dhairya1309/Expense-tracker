@@ -89,7 +89,9 @@ public class MainTracker {
 
                 default:
                     System.out.println("Invalid option. Try again.");
+                    
             }
         }
+        sc.close();
     }
 }
