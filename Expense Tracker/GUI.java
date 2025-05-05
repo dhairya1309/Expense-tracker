@@ -127,28 +127,7 @@ public class GUI {
            addFrame.setVisible(true); 
        } 
     
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-
-    private static void showExpenses() {
+     private static void showExpenses() {
         JFrame viewFrame = new JFrame("Your Expenses");
         viewFrame.setSize(600, 400);
 

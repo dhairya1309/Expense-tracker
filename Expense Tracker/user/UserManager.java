@@ -26,7 +26,11 @@ public class UserManager {
             ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            return rs.next() ? 1 : 0;
+            if (rs.next()) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
         catch (SQLException e) {
             return 0;
@@ -39,7 +43,10 @@ public class UserManager {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, username);
             int affected = ps.executeUpdate();
-            return affected > 0 ? 1 : 0;
+            if(affected > 0)
+            	return 1;
+            else
+            	return 0;
         }
         catch (SQLException e) {
             return 0;

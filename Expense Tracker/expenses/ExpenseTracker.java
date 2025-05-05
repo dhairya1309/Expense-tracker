@@ -25,36 +25,35 @@ public class ExpenseTracker {
             ps.executeUpdate();
         } 
         catch (SQLException e) {
-            e.printStackTrace();
+           System.out.println("Error");
         }
     }
 
     public String displayExpenses(String username) {
-        StringBuilder output = new StringBuilder(); 
+        	    String output = "";
+    	    try (Connection conn = DatabaseConnection.getConnection();
+    	         PreparedStatement ps = conn.prepareStatement("SELECT category, amount, date, time FROM expenses WHERE username = ?")) {
+    	        ps.setString(1, username);
+    	        ResultSet rs = ps.executeQuery();
 
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            String query = "SELECT category, amount, date, time FROM expenses WHERE username = ?";
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+    	        output += "| Category        |     Amount | Date         | Time     |\n";
+    	        output += "------------------------------------------------------------------\n";
 
-            output.append(String.format("| %-15s | %10s | %-12s | %-8s |%n", "Category", "Amount", "Date", "Time"));
-            output.append("------------------------------------------------------------------\n");
+    	        while (rs.next()) {
+    	            String category = rs.getString("category");
+    	            double amount = rs.getDouble("amount");
+    	            String date = rs.getString("date");
+    	            String time = rs.getString("time");
+    	            output += String.format("| %-15s | %10.2f | %-12s | %-8s |%n", category, amount, date, time);
+    	        }
 
-            while (rs.next()) {
-                output.append(String.format("| %-15s | %10.2f | %-12s | %-8s |%n",
-                        rs.getString("category"),
-                        rs.getDouble("amount"),
-                        rs.getString("date"),
-                        rs.getString("time")));
-            }
+    	    } catch (SQLException e) {
+    	        System.err.println("Error : " + e.getMessage());
+    	        output += "Error\n";
+    	    }
+    	    return output;
+    	
 
-        } catch (SQLException e) {
-            System.err.println("Error fetching expenses: " + e.getMessage());
-            output.append("Error fetching expenses. Please check the database connection.\n"); //append error message
-        }
-
-        return output.toString(); // Return the formatted string
     }
    
     public static List<String> getCategories() {

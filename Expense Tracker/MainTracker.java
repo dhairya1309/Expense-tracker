@@ -42,7 +42,7 @@ public class MainTracker {
 
         while (true) {
             System.out.println("\n--- Menu ---");
-            System.out.println("1. Add Expense\n2. View Expenses\n3. Expense Analysis\n4. Delete Account\n5. Exit");
+            System.out.println("1. Add Expense\n2. View Expenses\n3. Delete Account\n4. Exit");
             System.out.print("Enter choice: ");
             int option = sc.nextInt();
             sc.nextLine();
@@ -92,6 +92,5 @@ public class MainTracker {
                     
             }
         }
-        sc.close();
     }
 }
